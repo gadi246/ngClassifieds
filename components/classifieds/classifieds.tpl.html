@@ -9,7 +9,7 @@
       New Classified
     </md-button>
 
-    <md-button ng-click="showFilters = true">
+    <md-button ng-click="vm.toggleFilters()">
       <md-icon class="mdi mdi-magnify"></md-icon>
       Filters
     </md-button>
@@ -18,7 +18,7 @@
 
 </md-toolbar>
 
-<div class="filters" layout="row" layout-align="center center" ng-show="showFilters">
+<div class="filters" layout="row" layout-align="center center" ng-show="vm.showFilters">
   <md-input-container>
     <label>Enter Search Term</label>
     <input type="text" ng-model="classifiedsFilter">

@@ -1,6 +1,6 @@
 (function () {
 
-    angular.module("ngClassifieds", ["ngMaterial",'ui.router'])
+    angular.module("ngClassifieds", ["ngMaterial",'ui.router','firebase'])
         .config(function ($mdThemingProvider, $stateProvider) {
             $mdThemingProvider.theme('default')
                 .primaryPalette('teal')
@@ -15,6 +15,14 @@
                     url:'/new',
                     templateUrl: 'components/classifieds/new/classifieds.new.tpl.html',
                     controller: 'newClassifiedsCtrl as vm'
+                })
+                .state('classifieds.edit',{
+                    url:'/edit/:id',
+                    templateUrl: 'components/classifieds/edit/classifieds.edit.tpl.html',
+                    controller: 'editClassifiedsCtrl as vm',
+                    params: {
+                        classified: null
+                    }
                 });
         });
 

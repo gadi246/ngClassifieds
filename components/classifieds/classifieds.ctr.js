@@ -6,54 +6,75 @@
             var vm = this;
 
             vm.categories;
-            vm.classified;
+            // vm.classified;
             vm.classifieds;
-            vm.closeSidebar = closeSidebar;
+            // vm.closeSidebar = closeSidebar;
             vm.deleteClassified = deleteClassified;
-            vm.editing;
+            // vm.editing;
             vm.editClassified = editClassified;
             vm.openSidebar = openSidebar;
-            vm.saveClassified =saveClassified;
-            vm.saveEdit = saveEdit;
+            // vm.saveClassified =saveClassified;
+            // vm.saveEdit = saveEdit;
+            vm.toggleFilters = toggleFilters;
 
 
-            classifiedsFactory.getClassifieds().then(function (classifieds) {
-                vm.classifieds = classifieds.data;
-                vm.categories = getCategories(vm.classifieds);
+            // classifiedsFactory.getClassifieds().then(function (classifieds) {
+            //     vm.classifieds = classifieds.data;
+            //     vm.categories = getCategories(vm.classifieds);
+            // });
+
+            vm.classifieds = classifiedsFactory.ref;
+            vm.classifieds.$loaded().then(function (classifieds) {
+                vm.categories = getCategories(classifieds)
             });
+            $scope.$on('newClassified', function (event, classified) {
+                vm.classifieds.$add(classified);
+                // classified.id = Date.now();
+                // vm.classifieds.push(classified);
+                showToast('Classified Saved!');
+            });
+            $scope.$on('editSaved',function (event, message) {
+                showToast(message);
+            });
+
+            vm.showFilters = false;
 
             var contact = {
                 name: "John Dow",
                 phone: (555)-555-5555,
                 email: "johndoe@gmail.com"
             };
+            function toggleFilters() {
+                vm.showFilters = !vm.showFilters;
+            }
+
             function openSidebar () {
                 $state.go('classifieds.new')
             }
-            function closeSidebar () {
-                $mdSidenav('left').close();
-            }
-            function saveClassified(classified) {
-                if(classified){
-                    classified.contact = contact;
-                    vm.classifieds.push(classified);
-                    vm.classified = {};
-                    closeSidebar();
-                    showToast("Classified Saved!")
-                }
-
-            }
+            // function closeSidebar () {
+            //     $mdSidenav('left').close();
+            // }
+            // function saveClassified(classified) {
+            //     if(classified){
+            //         classified.contact = contact;
+            //         vm.classifieds.push(classified);
+            //         vm.classified = {};
+            //         closeSidebar();
+            //         showToast("Classified Saved!")
+            //     }
+            //
+            // }
             function editClassified(classified) {
-                vm.editing = true;
-                openSidebar();
-                vm.classified = classified;
+              $state.go('classifieds.edit', {
+                  id:classified.$id
+              })
             }
-            function saveEdit() {
-                vm.editing = false;
-                vm.classified = {};
-                closeSidebar();
-                showToast("Edit Saved!");
-            }
+            // function saveEdit() {
+            //     vm.editing = false;
+            //     vm.classified = {};
+            //     closeSidebar();
+            //     showToast("Edit Saved!");
+            // }
             function deleteClassified(event,classified) {
                 var confirm = $mdDialog.confirm()
                     .title("Are you sure you want to delelte " + classified.title + " ?")
@@ -61,8 +82,10 @@
                     .cancel("No")
                     .targetEvent(event);
                 $mdDialog.show(confirm).then(function () {
-                    var index = vm.classifieds.indexOf(classified);
-                    vm.classifieds.splice(index,1);
+                    vm.classifieds.$remove(classified);
+                    showToast('Classified Deleted!');
+                    // var index = vm.classifieds.indexOf(classified);
+                    // vm.classifieds.splice(index,1);
                 }, function () {
 
                 });
