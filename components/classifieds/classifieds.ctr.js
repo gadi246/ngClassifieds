@@ -25,6 +25,7 @@
 
             vm.classifieds = classifiedsFactory.ref;
             vm.classifieds.$loaded().then(function (classifieds) {
+                console.log(classifieds);
                 vm.categories = getCategories(classifieds)
             });
             $scope.$on('newClassified', function (event, classified) {
@@ -89,8 +90,6 @@
                 }, function () {
 
                 });
-
-
             }
             function showToast(msg) {
                 $mdToast.show(
