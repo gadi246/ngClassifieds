@@ -13,10 +13,11 @@
                 },
                 controller: classifiedCardController,
                 controllerAs: "vm"
-            }
-            function classifiedCardController($state, $scope, $mdDialog) {
+            };
+            function classifiedCardController($state, $scope, $mdDialog,classifiedsFactory) {
 
                 var vm = this;
+                vm.classifieds = classifiedsFactory.ref;
                 vm.editClassified = editClassified;
                 vm.deleteClassified = deleteClassified;
 
