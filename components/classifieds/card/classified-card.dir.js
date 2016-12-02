@@ -14,7 +14,7 @@
                 controller: classifiedCardController,
                 controllerAs: "vm"
             };
-            function classifiedCardController($state, $scope, $mdDialog,classifiedsFactory) {
+            function classifiedCardController($state, $scope, $mdDialog,classifiedsFactory,$mdToast) {
 
                 var vm = this;
                 vm.classifieds = classifiedsFactory.ref;
